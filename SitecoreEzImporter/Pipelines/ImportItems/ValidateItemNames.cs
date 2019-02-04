@@ -30,7 +30,7 @@ namespace EzImporter.Pipelines.ImportItems
 
         public void ValidateName(ItemDto item)
         {
-            var suggestedName = ItemValidNameHelper.GetValidItemName(item.Name);
+            string suggestedName = ProposeValidItemName(item);
             var nameWasAdjusted = suggestedName != item.Name;
             if (nameWasAdjusted || suggestedName == ItemValidNameHelper.UnNamedItem)
             {
@@ -44,5 +44,8 @@ namespace EzImporter.Pipelines.ImportItems
                 }
             }
         }
+
+        internal virtual string ProposeValidItemName(ItemDto item)
+            => ItemValidNameHelper.GetValidItemName(item.Name);
     }
 }
