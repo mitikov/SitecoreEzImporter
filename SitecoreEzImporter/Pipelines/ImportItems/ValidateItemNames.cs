@@ -34,7 +34,7 @@ namespace EzImporter.Pipelines.ImportItems
             if (suggestedName != item.Name
                 || suggestedName == Utils.UnNamedItem)
             {
-                Errors.Add(string.Format("Invalid item name '{0}'.", item.Name));
+                Errors.Add($"Invalid item name '{item.Name}'.");
             }
             if (item.Children != null)
             {
