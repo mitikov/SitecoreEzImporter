@@ -30,9 +30,9 @@ namespace EzImporter.Pipelines.ImportItems
 
         public void ValidateName(ItemDto item)
         {
-            var suggestedName = Utils.GetValidItemName(item.Name);
-            if (suggestedName != item.Name
-                || suggestedName == Utils.UnNamedItem)
+            var suggestedName = ItemValidNameHelper.GetValidItemName(item.Name);
+            var nameWasAdjusted = suggestedName != item.Name;
+            if (nameWasAdjusted || suggestedName == ItemValidNameHelper.UnNamedItem)
             {
                 Errors.Add($"Invalid item name '{item.Name}'.");
             }
