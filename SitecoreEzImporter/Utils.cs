@@ -3,8 +3,19 @@ using System.Text.RegularExpressions;
 
 namespace EzImporter
 {
-    public class Utils
+    /// <summary>
+    /// Produces a valid name for <see cref="Sitecore.Data.Items.Item"/>.
+    /// <para>Should an empty name be provided, will produce <see cref="UnNamedItem"/>.</para>
+    /// <para>Relies on <see cref="ItemUtil.ProposeValidItemName(string)"/> API and applies regexing on top.</para>
+    /// </summary>
+    public class ItemValidNameHelper
     {
+        /// <summary>
+        /// Produces valid item name from provided input relying on <see cref="ItemUtil.ProposeValidItemName(string)"/>.
+        /// <para>Falls back to <see cref="UnNamedItem"/>in case empy string was provided.</para>
+        /// </summary>
+        /// <param name="proposedName"></param>
+        /// <returns></returns>
         public static string GetValidItemName(string proposedName)
         {
             var newName = proposedName;
@@ -17,9 +28,9 @@ namespace EzImporter
             return newName;
         }
 
-        public static string UnNamedItem
-        {
-            get { return "Unnamed item"; }
-        }
+        /// <summary>
+        /// Returns a default name for item without name.
+        /// </summary>
+        public static string UnNamedItem => "Unnamed item";
     }
 }
