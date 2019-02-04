@@ -2,12 +2,16 @@
 
 namespace EzImporter.Pipelines.ImportItems
 {
+    /// <summary>
+    /// Specifies how many <see cref="InputDataRows"/> resulted into <see cref="CreatedItems"/> and <see cref="UpdatedItems"/>.
+    /// <para>Carries <see cref="Log"/> to dump import-related messages.</para>
+    /// </summary>    
     public class ImportStatistics
     {
         public int InputDataRows { get; set; }
         public int CreatedItems { get; set; }
         public int UpdatedItems { get; set; }
-        public StringBuilder Log { get; set; }
+        public readonly StringBuilder Log;
 
         public ImportStatistics()
         {
@@ -18,9 +22,6 @@ namespace EzImporter.Pipelines.ImportItems
         }
 
         public override string ToString()
-        {
-            return string.Format("{0} rows read from input source.\r\n{1} items created.\r\n{2} items updated.",
-                InputDataRows, CreatedItems, UpdatedItems);
-        }
+            => $"{InputDataRows} rows read from input source.\r\n{CreatedItems} items created.\r\n{UpdatedItems} items updated.";
     }
 }
