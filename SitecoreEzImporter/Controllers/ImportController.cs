@@ -53,8 +53,7 @@ namespace EzImporter.Controllers
                     Enum.Parse(typeof(InvalidLinkHandling), importModel.InvalidLinkHandling);
 
                 Sitecore.Diagnostics.Log.Info(
-                    string.Format("EzImporter: mappingId:{0} mediaItemId:{1} firstRowAsColumnNames:{2}",
-                        importModel.MappingId, importModel.MediaItemId, args.ImportOptions.FirstRowAsColumnNames),
+                    $"EzImporter: mappingId:{importModel.MappingId} mediaItemId:{importModel.MediaItemId} firstRowAsColumnNames:{args.ImportOptions.FirstRowAsColumnNames}",
                     this);
                 args.Timer.Start();
                 CorePipeline.Run("importItems", args);
@@ -73,7 +72,7 @@ namespace EzImporter.Controllers
                 {
                     result = new ImportResultModel
                     {
-                        Log = args.Statistics.ToString() + " Duration: " + args.Timer.Elapsed.ToString("c")
+                        Log = $"{args.Statistics} Duration: {args.Timer.Elapsed:c}"
                     };
                 }
             }

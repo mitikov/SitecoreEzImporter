@@ -30,11 +30,11 @@ namespace EzImporter.Pipelines.ImportItems
 
         public void ValidateName(ItemDto item)
         {
-            var suggestedName = Utils.GetValidItemName(item.Name);
-            if (suggestedName != item.Name
-                || suggestedName == Utils.UnNamedItem)
+            string suggestedName = ProposeValidItemName(item);
+            var nameWasAdjusted = suggestedName != item.Name;
+            if (nameWasAdjusted || suggestedName == ItemValidNameHelper.UnNamedItem)
             {
-                Errors.Add(string.Format("Invalid item name '{0}'.", item.Name));
+                Errors.Add($"Invalid item name '{item.Name}'.");
             }
             if (item.Children != null)
             {
@@ -44,5 +44,8 @@ namespace EzImporter.Pipelines.ImportItems
                 }
             }
         }
+
+        internal virtual string ProposeValidItemName(ItemDto item)
+            => ItemValidNameHelper.GetValidItemName(item.Name);
     }
 }

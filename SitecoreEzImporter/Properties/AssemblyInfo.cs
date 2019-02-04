@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ProductImporter")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: InternalsVisibleTo("Sitecore.EzImporter.Tests")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

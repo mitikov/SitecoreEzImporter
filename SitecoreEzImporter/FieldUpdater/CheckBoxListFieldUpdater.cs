@@ -36,7 +36,7 @@ namespace EzImporter.FieldUpdater
                             if (firstChild != null)
                             {
                                 var template = field.Item.Database.GetTemplate(firstChild.TemplateID);
-                                var itemName = Utils.GetValidItemName(value);
+                                var itemName = ItemValidNameHelper.GetValidItemName(value);
                                 var createdItem = selectionSource.Add(itemName, template);
                                 if (createdItem != null)
                                 {
