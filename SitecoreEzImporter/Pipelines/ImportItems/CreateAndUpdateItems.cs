@@ -22,7 +22,7 @@ namespace EzImporter.Pipelines.ImportItems
                     var parentItem = args.Database.GetItem(args.RootItemId);
                     foreach (var importItem in args.ImportItems)
                     {
-                        ImportItems(args, importItem, parentItem, true);
+                        ImportItems(args, importItem, parentItem, rootLevel: true);
                     }
                 }
             }
@@ -42,7 +42,7 @@ namespace EzImporter.Pipelines.ImportItems
                 {
                     foreach (var childImportItem in importItem.Children)
                     {
-                        ImportItems(args, childImportItem, createdItem, false);
+                        ImportItems(args, childImportItem, createdItem, rootLevel: false);
                     }
                 }
             }
