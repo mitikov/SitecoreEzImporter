@@ -14,13 +14,12 @@ namespace EzImporter.Pipelines.ImportItems
     {
         private readonly BaseLog _log;
         private readonly FieldUpdateManager _fieldUpdateManager;
-        
-        public CreateAndUpdateItems(BaseLog log)
-            :this(log, new DefaultFieldUpdateManager())
-        { }
 
-        internal CreateAndUpdateItems(BaseLog log, FieldUpdateManager fieldUpdateManager)
+        public CreateAndUpdateItems(BaseLog log, FieldUpdateManager fieldUpdateManager)
         {
+            Assert.ArgumentNotNull(log, nameof(log));
+            Assert.ArgumentNotNull(fieldUpdateManager, nameof(fieldUpdateManager));
+
             _log = log;
             _fieldUpdateManager = fieldUpdateManager;
         }

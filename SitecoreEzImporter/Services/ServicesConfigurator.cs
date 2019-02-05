@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using EzImporter.FieldUpdater;
+using Microsoft.Extensions.DependencyInjection;
 using Sitecore.DependencyInjection;
 
 namespace EzImporter.Configuration
@@ -12,6 +13,7 @@ namespace EzImporter.Configuration
         public void Configure(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<ImportOptionsFactory, DefaultImportOptionsFactory>();
+            serviceCollection.AddSingleton<FieldUpdateManager, DefaultFieldUpdateManager>();
         }
     }
 }
