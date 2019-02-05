@@ -24,15 +24,7 @@ namespace EzImporter.DataReaders
             _log.Info("EzImporter:Reading XSLX input data", this);
             try
             {
-                IExcelDataReader excelReader;
-                if (args.FileExtension == "xls")
-                {
-                    excelReader = ExcelReaderFactory.CreateBinaryReader(args.FileStream, ReadOption.Loose);
-                }
-                else
-                {
-                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(args.FileStream);
-                }
+                IExcelDataReader excelReader = BuildExcelReader(args);
 
                 excelReader.IsFirstRowAsColumnNames = args.ImportOptions.FirstRowAsColumnNames;
                 if (!excelReader.IsValid)
@@ -75,13 +67,24 @@ namespace EzImporter.DataReaders
             }
         }
 
+        internal virtual IExcelDataReader BuildExcelReader(ImportItemsArgs args)
+        {
+            if (args.FileExtension == "xls")
+            {
+                // TODO: Do we need that in 2019 ?
+                // Reading from a binary Excel file ('97-2003 format; *.xls)
+                return ExcelReaderFactory.CreateBinaryReader(args.FileStream, ReadOption.Loose);
+            }
+
+            return ExcelReaderFactory.CreateOpenXmlReader(args.FileStream);
+        }
 
         public string[] GetColumnNames(ImportItemsArgs args)
         {
             _log.Info("EzImporter:Reading column names from input XSLX file...", this);
             try
             {
-                //1. Reading from a binary Excel file ('97-2003 format; *.xls)
+                
                 //IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
 
                 //2. Reading from a OpenXml Excel file (2007 format; *.xlsx)
@@ -90,7 +93,7 @@ namespace EzImporter.DataReaders
                 excelReader.IsFirstRowAsColumnNames = true; //assume first line is data, so we can read it
                 if (!excelReader.IsValid)
                 {
-                    _log.Info("EzImporter:Invalid Excel file '" + excelReader.ExceptionMessage + "'", this);
+                    _log.Info($"EzImporter:Invalid Excel file '{excelReader.ExceptionMessage}'", this);
                     return Array.Empty<string>();
                 }
                 DataSet result = excelReader.AsDataSet();
