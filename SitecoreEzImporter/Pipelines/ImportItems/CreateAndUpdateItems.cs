@@ -1,5 +1,6 @@
 ﻿using EzImporter.FieldUpdater;
 using EzImporter.Map;
+using Sitecore.Abstractions;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Diagnostics;
@@ -11,6 +12,19 @@ namespace EzImporter.Pipelines.ImportItems
 {
     public class CreateAndUpdateItems : ImportItemsProcessor
     {
+        private readonly BaseLog _log;
+        private readonly FieldUpdateManager _fieldUpdateManager;
+        
+        public CreateAndUpdateItems(BaseLog log)
+            :this(log, new DefaultFieldUpdateManager())
+        { }
+
+        internal CreateAndUpdateItems(BaseLog log, FieldUpdateManager fieldUpdateManager)
+        {
+            _log = log;
+            _fieldUpdateManager = fieldUpdateManager;
+        }
+
         public override void Process(ImportItemsArgs args)
         {
             var originalIndexingSetting = Sitecore.Configuration.Settings.Indexing.Enabled;
@@ -65,12 +79,12 @@ namespace EzImporter.Pipelines.ImportItems
                 {
                     args.Statistics.UpdatedItems++;
                     item = item.Versions.AddVersion();
-                    Log.Info(string.Format("EzImporter:Creating new version of item {0}", item.Paths.ContentPath),
+                    _log.Info($"EzImporter:Creating new version of item {item.Paths.ContentPath}",
                         this);
                 }
                 else if (args.ImportOptions.ExistingItemHandling == ExistingItemHandling.Skip)
                 {
-                    Log.Info(string.Format("EzImporter:Skipping update of item {0}", item.Paths.ContentPath), this);
+                    _log.Info($"EzImporter:Skipping update of item {item.Paths.ContentPath}", this);
                     return item;
                 }
                 else if (args.ImportOptions.ExistingItemHandling == ExistingItemHandling.Update)
@@ -84,7 +98,7 @@ namespace EzImporter.Pipelines.ImportItems
                 //if not found then create one
                 args.Statistics.CreatedItems++;
                 item = parent.Add(importItem.Name, templateItem);
-                Log.Info(string.Format("EzImporter:Creating item {0}", item.Paths.ContentPath), this);
+                _log.Info($"EzImporter:Creating item {item.Paths.ContentPath}", this);
             }
 
             if (item == null)
@@ -101,15 +115,12 @@ namespace EzImporter.Pipelines.ImportItems
                     var field = item.Fields[key];
                     if (field != null)
                     {
-                        FieldUpdateManager.UpdateField(field, fieldValue, args.ImportOptions);
-                        Log.Info(string.Format("'{0}' field set to '{1}'", key, fieldValue), this);
+                        _fieldUpdateManager.UpdateField(field, fieldValue, args.ImportOptions);
+                        _log.Info($"'{key}' field set to '{fieldValue}'", this);
                     }
                     else
                     {
-                        Log.Info(
-                            string.Format(
-                                "EzImporter:Field '{0}' not found on item, skipping update for this field",
-                                key), this);
+                        _log.Info($"EzImporter:Field '{key}' not found on item, skipping update for this field", this);
                     }
                 }
                 return item;
