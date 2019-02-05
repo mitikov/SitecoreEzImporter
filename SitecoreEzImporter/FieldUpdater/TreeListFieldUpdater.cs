@@ -4,6 +4,10 @@ using Sitecore.Data;
 
 namespace EzImporter.FieldUpdater
 {
+    /// <summary>
+    /// Locates imported values under field source selection options, and appends IDs of found items to field value.
+    /// <para>Imported value might be a set of values separated by <see cref="IImportOptions.MultipleValuesImportSeparator"/>.</para>
+    /// </summary>
     public class TreeListFieldUpdater : IFieldUpdater
     {
         public void UpdateField(Sitecore.Data.Fields.Field field, string importValue, IImportOptions importOptions)

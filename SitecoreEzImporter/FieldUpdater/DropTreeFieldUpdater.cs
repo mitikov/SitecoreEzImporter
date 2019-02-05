@@ -3,6 +3,9 @@ using Sitecore.Data;
 
 namespace EzImporter.FieldUpdater
 {
+    /// <summary>
+    /// Attemps to locate imported value among allowed field values enforced by <see cref="Sitecore.Data.Fields.Field.Source"/>. 
+    /// </summary>
     public class DropTreeFieldUpdater : IFieldUpdater
     {
         public void UpdateField(Sitecore.Data.Fields.Field field, string importValue, IImportOptions importOptions)
