@@ -178,6 +178,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\DefaultImportOptionsFactory.cs" />
+    <Compile Include="Services\ServicesConfigurator.cs" />
+    <Compile Include="FieldUpdater\DefaultFieldUpdateManager.cs" />
     <Compile Include="Map\ItemDto.cs" />
     <Compile Include="Pipelines\ImportItems\BuildImportDataStructure.cs">
       <SubType>Code</SubType>
@@ -185,7 +188,7 @@
     <Compile Include="Pipelines\ImportItems\ValidateItemNames.cs" />
     <Compile Include="Tasks\Import.cs" />
     <Compile Include="Commands\LaunchEzImporter.cs" />
-    <Compile Include="Configuration\Factory.cs" />
+    <Compile Include="Configuration\ImportOptionsFactory.cs" />
     <Compile Include="Configuration\IImportOptions.cs" />
     <Compile Include="Configuration\ImportOptions.cs" />
     <Compile Include="Controllers\ImportController.cs" />
@@ -230,6 +233,7 @@
     <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Tasks\ImportCommandItem.cs" />
     <Compile Include="ItemValidNameHelper.cs" />
+    <Compile Include="TextConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\ezimporter.pubxml" />

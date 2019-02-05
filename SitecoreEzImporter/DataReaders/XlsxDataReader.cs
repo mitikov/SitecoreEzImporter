@@ -1,5 +1,6 @@
 ﻿using Excel;
 using EzImporter.Pipelines.ImportItems;
+using Sitecore.Abstractions;
 using Sitecore.Diagnostics;
 using System;
 using System.Data;
@@ -7,37 +8,42 @@ using System.Linq;
 
 namespace EzImporter.DataReaders
 {
+    /// <summary>
+    /// Reads excel documents via <see cref=" Excel.ExcelReaderFactory"/> helper framework.
+    /// <para>We provide <see cref="ImportItemsArgs.FileStream"/> of Excel file and get <see cref="DataTable"/> build from first sheet to to <see cref="ImportItemsArgs.ImportData"/></para>
+    /// </summary>
     public class XlsxDataReader : IDataReader
     {
+        private readonly BaseLog _log;
+
+        public XlsxDataReader(BaseLog log)
+        {
+            Assert.ArgumentNotNull(log, nameof(log));
+
+            _log = log;
+        }
+
         public void ReadData(ImportItemsArgs args)
         {
-            Log.Info("EzImporter:Reading XSLX input data", this);
+            _log.Info("EzImporter:Reading XSLX input data", this);
             try
             {
-                IExcelDataReader excelReader;
-                if (args.FileExtension == "xls")
-                {
-                    excelReader = ExcelReaderFactory.CreateBinaryReader(args.FileStream, ReadOption.Loose);
-                }
-                else
-                {
-                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(args.FileStream);
-                }
+                var excelReader = BuildExcelReader(args);
 
                 excelReader.IsFirstRowAsColumnNames = args.ImportOptions.FirstRowAsColumnNames;
                 if (!excelReader.IsValid)
                 {
-                    Log.Error("EzImporter:Invalid Excel file '" + excelReader.ExceptionMessage + "'", this);
+                    _log.Error($"EzImporter:Invalid Excel file '{excelReader.ExceptionMessage}'", this);
                     return;
                 }
                 DataSet result = excelReader.AsDataSet();
                 if (result == null)
                 {
-                    Log.Error("EzImporter:No data could be retrieved from Excel file.", this);
+                    _log.Error("EzImporter:No data could be retrieved from Excel file.", this);
                 }
                 if (result.Tables == null || result.Tables.Count == 0)
                 {
-                    Log.Error("EzImporter:No worksheets found in Excel file", this);
+                    _log.Error("EzImporter:No worksheets found in Excel file", this);
                     return;
                 }
                 var readDataTable = result.Tables[0];
@@ -57,41 +63,54 @@ namespace EzImporter.DataReaders
                     }
                     args.ImportData.Rows.Add(row);
                 }
-                Log.Info(string.Format("EzImporter:{0} records read from input data.", readDataTable.Rows.Count), this);
+                _log.Info($"EzImporter:{readDataTable.Rows.Count} records read from input data.", this);
             }
             catch (Exception ex)
             {
-                Log.Error("EzImporter:" + ex.ToString(), this);
+                _log.Error("EzImporter:" + ex.ToString(), this);
             }
         }
 
+        /// <summary>
+        /// Builds <see cref="IExcelDataReader"/> based on excel version picked from file extension.
+        /// <para>Different approaches are picked for legacy 'xls' format up to 2009 and modern one.</para>
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        internal virtual IExcelDataReader BuildExcelReader(ImportItemsArgs args)
+        {
+            if (args.FileExtension == "xls")
+            {
+                // TODO: Do we need that in 2019 ?
+                // Reading from a binary Excel file ('97-2003 format; *.xls)
+                return ExcelReaderFactory.CreateBinaryReader(args.FileStream, ReadOption.Loose);
+            }
+
+            return ExcelReaderFactory.CreateOpenXmlReader(args.FileStream);
+        }
 
         public string[] GetColumnNames(ImportItemsArgs args)
         {
-            Log.Info("EzImporter:Reading column names from input XSLX file...", this);
+            _log.Info("EzImporter:Reading column names from input XSLX file...", this);
             try
             {
-                //1. Reading from a binary Excel file ('97-2003 format; *.xls)
-                //IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-
-                //2. Reading from a OpenXml Excel file (2007 format; *.xlsx)
-                IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(args.FileStream);
+                var excelReader = BuildExcelReader(args);
 
                 excelReader.IsFirstRowAsColumnNames = true; //assume first line is data, so we can read it
                 if (!excelReader.IsValid)
                 {
-                    Log.Info("EzImporter:Invalid Excel file '" + excelReader.ExceptionMessage + "'", this);
-                    return new string[] {};
+                    _log.Info($"EzImporter:Invalid Excel file '{excelReader.ExceptionMessage}'", this);
+                    return Array.Empty<string>();
                 }
                 DataSet result = excelReader.AsDataSet();
                 if (result == null)
                 {
-                    Log.Info("EzImporter:No data could be retrieved from Excel file.", this);
+                    _log.Info("EzImporter:No data could be retrieved from Excel file.", this);
                 }
                 if (result.Tables == null || result.Tables.Count == 0)
                 {
-                    Log.Info("EzImporter:No worksheets found in Excel file", this);
-                    return new string[] {};
+                    _log.Info("EzImporter:No worksheets found in Excel file", this);
+                    return Array.Empty<string>();
                 }
                 var readDataTable = result.Tables[0];
                 return readDataTable.Columns
@@ -100,9 +119,9 @@ namespace EzImporter.DataReaders
             }
             catch (Exception ex)
             {
-                Log.Error("EzImporter:" + ex.ToString(), this);
+                _log.Error("EzImporter:" + ex.ToString(), ex, this);
             }
-            return new string[] { };
+            return Array.Empty<string>();
         }
     }
 }

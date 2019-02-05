@@ -1,10 +1,10 @@
 ﻿namespace EzImporter.Configuration
 {
-    public class Settings
+    public class ImporterModuleConfiguration
     {
-        public static Settings GetConfigurationSettings()
+        public static ImporterModuleConfiguration GetConfigurationSettings()
         {
-            return new Settings
+            return new ImporterModuleConfiguration
             {
                 MapsLocation = Sitecore.Configuration.Settings.GetSetting("EzImporter.MapsLocation", ""),
                 RootItemQuery = Sitecore.Configuration.Settings.GetSetting("EzImporter.RootItemQuery", ""),

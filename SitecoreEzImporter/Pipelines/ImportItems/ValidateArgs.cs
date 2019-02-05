@@ -1,24 +1,28 @@
-﻿using Sitecore.Diagnostics;
+﻿using Sitecore.Abstractions;
+using Sitecore.Diagnostics;
 
 namespace EzImporter.Pipelines.ImportItems
 {
     public class ValidateArgs : ImportItemsProcessor
     {
+        private readonly BaseLog _log;
+
+        public ValidateArgs(BaseLog log)
+        {
+            Assert.ArgumentNotNull(log, nameof(log));
+
+            _log = log;
+        }
+
         public override void Process(ImportItemsArgs args)
         {
-            Log.Info("EzImporter:Validating input...", this);
-            var argsValid = true;
+            _log.Info("EzImporter:Validating input...", this);
             if (args.FileStream == null)
             {
-                Log.Error("EzImporter:Input file not found.", this);
-                argsValid = false;
-            }
-            if (!argsValid)
-            {
-                args.AddMessage("Error: Input file not found.");
+                _log.Error("EzImporter: Input file not found.", this);
                 args.ErrorDetail = "FileStream = null";
                 args.AbortPipeline();
-            }
+            }            
         }
     }
 }

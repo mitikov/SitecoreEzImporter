@@ -1,4 +1,5 @@
 ﻿using EzImporter.Pipelines.ImportItems;
+using Sitecore.Abstractions;
 using Sitecore.Diagnostics;
 using System;
 using System.IO;
@@ -7,9 +8,18 @@ namespace EzImporter.DataReaders
 {
     public class CsvDataReader : IDataReader
     {
+        private readonly BaseLog _log;
+
+        public CsvDataReader(BaseLog log)
+        {
+            Assert.ArgumentNotNull(log, nameof(log));
+
+            _log = log;
+        }
+
         public void ReadData(ImportItemsArgs args)
         {
-            Log.Info("EzImporter:Reading CSV input data...", this);
+            _log.Info("EzImporter:Reading CSV input data...", this);
             try
             {
                 var reader = new StreamReader(args.FileStream);
@@ -35,25 +45,25 @@ namespace EzImporter.DataReaders
                         }
                         else
                         {
-                            row[j] = "";
+                            row[j] = string.Empty;
                         }
                     }
                     args.ImportData.Rows.Add(row);
                     insertLineCount++;
 
                 } while (!reader.EndOfStream);
-                Log.Info(string.Format("EzImporter:{0} records read from input data.", insertLineCount), this);
+                _log.Info($"EzImporter:{insertLineCount} records read from input data.", this);
             }
             catch (Exception ex)
             {
-                Log.Error("EzImporter:" + ex.ToString(), this);
+                _log.Error("EzImporter:" + ex.ToString(), this);
             }
         }
 
 
         public string[] GetColumnNames(ImportItemsArgs args)
         {
-            Log.Info("EzImporter:Reading column names from input CSV file...", this);
+            _log.Info("EzImporter:Reading column names from input CSV file...", this);
             try
             {
                 using (var reader = new StreamReader(args.FileStream))
@@ -67,9 +77,9 @@ namespace EzImporter.DataReaders
             }
             catch (Exception ex)
             {
-                Log.Error("EzImporter:" + ex.ToString(), this);
+                _log.Error("EzImporter:" + ex.ToString(), this);
             }
-            return new string[] { };
+            return Array.Empty<string>();
         }
     }
 }

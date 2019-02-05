@@ -1,10 +1,13 @@
 ﻿using EzImporter.Configuration;
 using EzImporter.Models;
 using EzImporter.Pipelines.ImportItems;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Sitecore.Abstractions;
 using Sitecore.Data;
 using Sitecore.Data.Items;
-using Sitecore.Pipelines;
+using Sitecore.DependencyInjection;
+using Sitecore.Diagnostics;
 using Sitecore.Services.Core;
 using Sitecore.Services.Infrastructure.Web.Http;
 using System;
@@ -17,12 +20,42 @@ namespace EzImporter.Controllers
     [ServicesController]
     public class ImportController : ServicesApiController
     {
+        private readonly BaseFactory _factory;
+        private readonly BaseCorePipelineManager _pipelineManager;
+        private readonly BaseLog _log;
+        private readonly ImportOptionsFactory _importOptionsFactory;
+
+        #region Constuctors
+        public ImportController()
+            : this(
+                  ServiceLocator.ServiceProvider.GetRequiredService<BaseFactory>(),
+                  ServiceLocator.ServiceProvider.GetRequiredService<BaseCorePipelineManager>(),
+                  ServiceLocator.ServiceProvider.GetRequiredService<BaseLog>(),
+                  ServiceLocator.ServiceProvider.GetRequiredService<ImportOptionsFactory>())
+        { }
+
+        public ImportController(BaseFactory factory, BaseCorePipelineManager pipelineManager, BaseLog log, ImportOptionsFactory importOptionsFactory)
+            : base()
+        {
+            Assert.ArgumentNotNull(factory, nameof(factory));
+            Assert.ArgumentNotNull(pipelineManager, nameof(pipelineManager));
+            Assert.ArgumentNotNull(log, nameof(log));
+            Assert.ArgumentNotNull(importOptionsFactory, nameof(importOptionsFactory));
+
+            _factory = factory;
+            _pipelineManager = pipelineManager;
+            _log = log;
+            _importOptionsFactory = importOptionsFactory;
+        }
+
+        #endregion
+
         [HttpPost]
         public IHttpActionResult Import(ImportModel importModel)
         {
-            var database = Sitecore.Configuration.Factory.GetDatabase("master");
+            var database = _factory.GetDatabase(TextConstants.ContentDatabaseName);
             var languageItem = database.GetItem(importModel.Language);
-            var uploadedFile = (MediaItem) database.GetItem(importModel.MediaItemId);
+            var uploadedFile = (MediaItem)database.GetItem(importModel.MediaItemId);
             if (uploadedFile == null)
             {
                 return new JsonResult<ImportResultModel>(null, new JsonSerializerSettings(), Encoding.UTF8, this);
@@ -52,11 +85,11 @@ namespace EzImporter.Controllers
                 args.ImportOptions.InvalidLinkHandling = (InvalidLinkHandling)
                     Enum.Parse(typeof(InvalidLinkHandling), importModel.InvalidLinkHandling);
 
-                Sitecore.Diagnostics.Log.Info(
+                _log.Info(
                     $"EzImporter: mappingId:{importModel.MappingId} mediaItemId:{importModel.MediaItemId} firstRowAsColumnNames:{args.ImportOptions.FirstRowAsColumnNames}",
                     this);
                 args.Timer.Start();
-                CorePipeline.Run("importItems", args);
+                _pipelineManager.Run(TextConstants.PipelineNames.ImportItems, args);
                 args.Timer.Stop();
                 if (args.Aborted)
                 {
@@ -92,7 +125,7 @@ namespace EzImporter.Controllers
         [HttpGet]
         public IHttpActionResult DefaultSettings()
         {
-            var options = EzImporter.Configuration.Factory.GetDefaultImportOptions();
+            var options = _importOptionsFactory.GetDefaultImportOptions();
             var model = new SettingsModel
             {
                 CsvDelimiter = options.CsvDelimiter[0],

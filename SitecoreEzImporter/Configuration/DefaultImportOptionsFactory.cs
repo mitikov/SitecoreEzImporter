@@ -2,9 +2,9 @@
 
 namespace EzImporter.Configuration
 {
-    public class Factory
+    public class DefaultImportOptionsFactory: ImportOptionsFactory
     {
-        public static IImportOptions GetDefaultImportOptions()
+        public override IImportOptions GetDefaultImportOptions()
         {
             var value = Sitecore.Configuration.Settings.GetSetting("EzImporter.ExistingItemHandling", "AddVersion");
             ExistingItemHandling existingItemHandling;
