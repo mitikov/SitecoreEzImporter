@@ -1,10 +1,14 @@
 ﻿using EzImporter.Configuration;
 using EzImporter.Models;
 using EzImporter.Pipelines.ImportItems;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Sitecore.Abstractions;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Pipelines;
+using Sitecore.DependencyInjection;
+using Sitecore.Diagnostics;
 using Sitecore.Services.Core;
 using Sitecore.Services.Infrastructure.Web.Http;
 using System;
@@ -17,12 +21,38 @@ namespace EzImporter.Controllers
     [ServicesController]
     public class ImportController : ServicesApiController
     {
+        private readonly BaseFactory _factory;
+        private readonly BaseCorePipelineManager _pipelineManager;
+        private readonly BaseLog _log;
+
+        #region Constuctors
+        public ImportController()
+            : this(
+                  ServiceLocator.ServiceProvider.GetRequiredService<BaseFactory>(),
+                  ServiceLocator.ServiceProvider.GetRequiredService<BaseCorePipelineManager>(),
+                  ServiceLocator.ServiceProvider.GetRequiredService<BaseLog>())
+        { }
+
+        public ImportController(BaseFactory factory, BaseCorePipelineManager pipelineManager, BaseLog log)
+            : base()
+        {
+            Assert.ArgumentNotNull(factory, nameof(factory));
+            Assert.ArgumentNotNull(pipelineManager, nameof(pipelineManager));
+            Assert.ArgumentNotNull(log, nameof(log));
+
+            _factory = factory;
+            _pipelineManager = pipelineManager;
+            _log = log;
+        }
+
+        #endregion
+
         [HttpPost]
         public IHttpActionResult Import(ImportModel importModel)
         {
-            var database = Sitecore.Configuration.Factory.GetDatabase("master");
+            var database = _factory.GetDatabase(TextConstants.ContentDatabaseName);
             var languageItem = database.GetItem(importModel.Language);
-            var uploadedFile = (MediaItem) database.GetItem(importModel.MediaItemId);
+            var uploadedFile = (MediaItem)database.GetItem(importModel.MediaItemId);
             if (uploadedFile == null)
             {
                 return new JsonResult<ImportResultModel>(null, new JsonSerializerSettings(), Encoding.UTF8, this);
