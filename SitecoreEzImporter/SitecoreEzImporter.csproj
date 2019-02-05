@@ -178,6 +178,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\DefaultImportOptionsFactory.cs" />
     <Compile Include="FieldUpdater\DefaultFieldUpdateManager.cs" />
     <Compile Include="Map\ItemDto.cs" />
     <Compile Include="Pipelines\ImportItems\BuildImportDataStructure.cs">

@@ -12,6 +12,15 @@ namespace EzImporter.Tasks
 {
     public class Import
     {
+        private readonly ImportOptionsFactory _importOptionsFactory;
+
+        public Import(ImportOptionsFactory importOptionsFactory)
+        {
+            Assert.ArgumentNotNull(importOptionsFactory, nameof(importOptionsFactory));
+
+            _importOptionsFactory = importOptionsFactory;
+        }
+
         public void Run(Item[] items, CommandItem command, ScheduleItem schedule)
         {
             var importCommand = new ImportCommandItem(command.InnerItem);
@@ -28,7 +37,7 @@ namespace EzImporter.Tasks
                 + " MultipleValuesImportSeparator=" + importCommand.MultipleValuesImportSeparator
                 + " TreePathValuesImportSeparator=" + importCommand.TreePathValuesImportSeparator, this);
 
-            var options = ImportOptionsFactory.GetDefaultImportOptions();
+            var options = _importOptionsFactory.GetDefaultImportOptions();
             if (importCommand.CsvDelimiter != null)
             {
                 options.CsvDelimiter = new[] {importCommand.CsvDelimiter};

@@ -23,25 +23,29 @@ namespace EzImporter.Controllers
         private readonly BaseFactory _factory;
         private readonly BaseCorePipelineManager _pipelineManager;
         private readonly BaseLog _log;
+        private readonly ImportOptionsFactory _importOptionsFactory;
 
         #region Constuctors
         public ImportController()
             : this(
                   ServiceLocator.ServiceProvider.GetRequiredService<BaseFactory>(),
                   ServiceLocator.ServiceProvider.GetRequiredService<BaseCorePipelineManager>(),
-                  ServiceLocator.ServiceProvider.GetRequiredService<BaseLog>())
+                  ServiceLocator.ServiceProvider.GetRequiredService<BaseLog>(),
+                  ServiceLocator.ServiceProvider.GetRequiredService<ImportOptionsFactory>())
         { }
 
-        public ImportController(BaseFactory factory, BaseCorePipelineManager pipelineManager, BaseLog log)
+        public ImportController(BaseFactory factory, BaseCorePipelineManager pipelineManager, BaseLog log, ImportOptionsFactory importOptionsFactory)
             : base()
         {
             Assert.ArgumentNotNull(factory, nameof(factory));
             Assert.ArgumentNotNull(pipelineManager, nameof(pipelineManager));
             Assert.ArgumentNotNull(log, nameof(log));
+            Assert.ArgumentNotNull(importOptionsFactory, nameof(importOptionsFactory));
 
             _factory = factory;
             _pipelineManager = pipelineManager;
             _log = log;
+            _importOptionsFactory = importOptionsFactory;
         }
 
         #endregion
@@ -121,7 +125,7 @@ namespace EzImporter.Controllers
         [HttpGet]
         public IHttpActionResult DefaultSettings()
         {
-            var options = EzImporter.Configuration.ImportOptionsFactory.GetDefaultImportOptions();
+            var options = _importOptionsFactory.GetDefaultImportOptions();
             var model = new SettingsModel
             {
                 CsvDelimiter = options.CsvDelimiter[0],
