@@ -13,9 +13,6 @@ namespace EzImporter.Map.CustomItems
             
         }
 
-        public Item InputField
-        {
-            get { return ItemExtensions.GetLinkItem(this.InnerItem, "InputField"); }
-        }
+        public Item InputField => ItemExtensions.GetLinkItem(InnerItem, fieldName: "InputField");
     }
 }
