@@ -230,6 +230,7 @@
     <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Tasks\ImportCommandItem.cs" />
     <Compile Include="ItemValidNameHelper.cs" />
+    <Compile Include="TextConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\ezimporter.pubxml" />
