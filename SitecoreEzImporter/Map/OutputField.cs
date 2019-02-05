@@ -1,5 +1,8 @@
-﻿namespace EzImporter.Map
+﻿using System.Diagnostics;
+
+namespace EzImporter.Map
 {
+    [DebuggerDisplay("{SourceColumn}#{TargetFieldName}")]
     public class OutputField
     {
         public string SourceColumn { get; set; }
