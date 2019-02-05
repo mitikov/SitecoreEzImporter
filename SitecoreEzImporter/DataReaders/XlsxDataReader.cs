@@ -24,7 +24,7 @@ namespace EzImporter.DataReaders
             _log.Info("EzImporter:Reading XSLX input data", this);
             try
             {
-                IExcelDataReader excelReader = BuildExcelReader(args);
+                var excelReader = BuildExcelReader(args);
 
                 excelReader.IsFirstRowAsColumnNames = args.ImportOptions.FirstRowAsColumnNames;
                 if (!excelReader.IsValid)
@@ -67,6 +67,12 @@ namespace EzImporter.DataReaders
             }
         }
 
+        /// <summary>
+        /// Builds <see cref="IExcelDataReader"/> based on excel version picked from file extension.
+        /// <para>Different approaches are picked for legacy 'xls' format up to 2009 and modern one.</para>
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         internal virtual IExcelDataReader BuildExcelReader(ImportItemsArgs args)
         {
             if (args.FileExtension == "xls")
@@ -84,11 +90,7 @@ namespace EzImporter.DataReaders
             _log.Info("EzImporter:Reading column names from input XSLX file...", this);
             try
             {
-                
-                //IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-
-                //2. Reading from a OpenXml Excel file (2007 format; *.xlsx)
-                IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(args.FileStream);
+                var excelReader = BuildExcelReader(args);
 
                 excelReader.IsFirstRowAsColumnNames = true; //assume first line is data, so we can read it
                 if (!excelReader.IsValid)
