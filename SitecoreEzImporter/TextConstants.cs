@@ -13,7 +13,6 @@ namespace EzImporter
         /// </summary>
         public static readonly string ContentDatabaseName = "master";
 
-
         public static class PipelineNames
         {
             /// <summary>

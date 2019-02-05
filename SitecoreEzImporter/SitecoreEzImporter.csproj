@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\DefaultImportOptionsFactory.cs" />
+    <Compile Include="Configuration\ImporterModuleConfiguration.cs" />
     <Compile Include="Services\ServicesConfigurator.cs" />
     <Compile Include="FieldUpdater\DefaultFieldUpdateManager.cs" />
     <Compile Include="Map\ItemDto.cs" />
@@ -186,6 +187,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Pipelines\ImportItems\ValidateItemNames.cs" />
+    <Compile Include="SettingNames.cs" />
     <Compile Include="Tasks\Import.cs" />
     <Compile Include="Commands\LaunchEzImporter.cs" />
     <Compile Include="Configuration\ImportOptionsFactory.cs" />
@@ -230,7 +232,6 @@
     <Compile Include="Pipelines\ImportItems\ValidateArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pipelines\ImportItems\ImportItemsArgs.cs" />
-    <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Tasks\ImportCommandItem.cs" />
     <Compile Include="ItemValidNameHelper.cs" />
     <Compile Include="TextConstants.cs" />

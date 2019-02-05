@@ -53,15 +53,6 @@ namespace SitecoreEzImporter.Tests.Pipelines.ImportItems
         }
 
         [Theory, AutoData]
-        public void ValidateItemNames_Success(string value)
-        {
-            var validateItemNamesProcessor = new ValidateItemNames();
-            var importItem = new ItemDto(value);
-            validateItemNamesProcessor.ValidateName(importItem);
-            Assert.Empty(validateItemNamesProcessor.Errors);
-        }
-
-        [Theory, AutoData]
         public void Process_WhenImportItemHasInvalidName_AbortsPipeline(string invalidItemName, string suggestedItemName)
         {
             // Arrange

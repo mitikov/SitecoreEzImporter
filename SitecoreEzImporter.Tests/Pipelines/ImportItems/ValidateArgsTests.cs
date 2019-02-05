@@ -1,17 +1,27 @@
-﻿using EzImporter.Pipelines.ImportItems;
+﻿using AutoFixture.AutoNSubstitute;
+using AutoFixture.Xunit2;
+using EzImporter.Pipelines.ImportItems;
+using EzImporter.Tests;
+using FluentAssertions;
+using Sitecore.Abstractions;
 using Xunit;
 
 namespace SitecoreEzImporter.Tests.Pipelines.ImportItems
 {
     public class ValidateArgsTests
     {
-        [Fact]
-        public void Process_Aborted()
+        [Theory, AutoNSubstituteData]
+        public void Process_WhenNoStream_AbortsPipeline(BaseLog log)
         {
-            var validateArgs = new ValidateArgs();
+            // Arrange
+            var validateArgs = new ValidateArgs(log);
             var args = new ImportItemsArgs { FileStream = null };
+
+            // Act
             validateArgs.Process(args);
-            Assert.True(args.Aborted);
+
+            // Assert
+            args.Aborted.Should().BeTrue();       
         }
     }
 }
