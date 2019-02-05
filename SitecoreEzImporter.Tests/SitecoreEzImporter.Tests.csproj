@@ -145,7 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoNSubstituteDataAttribute.cs" />
-    <Compile Include="Configuration\DefaultImportOptionsFactoryTests.cs" />
     <Compile Include="Extensions\DataTableExtensionsTests.cs" />
     <Compile Include="Pipelines\ImportItems\ValidateArgsTests.cs" />
     <Compile Include="Pipelines\ImportItems\ValidateItemNamesTests.cs" />
