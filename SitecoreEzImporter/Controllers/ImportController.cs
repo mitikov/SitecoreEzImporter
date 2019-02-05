@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using Sitecore.Abstractions;
 using Sitecore.Data;
 using Sitecore.Data.Items;
-using Sitecore.Pipelines;
 using Sitecore.DependencyInjection;
 using Sitecore.Diagnostics;
 using Sitecore.Services.Core;
@@ -82,11 +81,11 @@ namespace EzImporter.Controllers
                 args.ImportOptions.InvalidLinkHandling = (InvalidLinkHandling)
                     Enum.Parse(typeof(InvalidLinkHandling), importModel.InvalidLinkHandling);
 
-                Sitecore.Diagnostics.Log.Info(
+                _log.Info(
                     $"EzImporter: mappingId:{importModel.MappingId} mediaItemId:{importModel.MediaItemId} firstRowAsColumnNames:{args.ImportOptions.FirstRowAsColumnNames}",
                     this);
                 args.Timer.Start();
-                CorePipeline.Run("importItems", args);
+                _pipelineManager.Run(TextConstants.PipelineNames.ImportItems, args);
                 args.Timer.Stop();
                 if (args.Aborted)
                 {
