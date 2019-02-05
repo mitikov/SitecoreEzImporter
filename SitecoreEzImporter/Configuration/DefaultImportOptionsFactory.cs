@@ -2,7 +2,7 @@
 
 namespace EzImporter.Configuration
 {
-    public class DefaultImportOptionsFactory: ImportOptionsFactory
+    public class DefaultImportOptionsFactory : ImportOptionsFactory
     {
         public override IImportOptions GetDefaultImportOptions()
         {
@@ -26,15 +26,30 @@ namespace EzImporter.Configuration
                 ExistingItemHandling = existingItemHandling,
                 InvalidLinkHandling = invalidLinkHandling,
                 MultipleValuesImportSeparator =
-                    Sitecore.Configuration.Settings.GetSetting("EzImporter.MultipleValuesImportSeparator", "|"),
+                    GetSetting("EzImporter.MultipleValuesImportSeparator", "|"),
                 TreePathValuesImportSeparator =
-                    Sitecore.Configuration.Settings.GetSetting("EzImporter.TreePathValuesImportSeparator", @"\"),
+                    GetSetting("EzImporter.TreePathValuesImportSeparator", @"\"),
                 CsvDelimiter = new[]
                 {
-                    Sitecore.Configuration.Settings.GetSetting("EzImporter.CsvDelimiter", ",")
+                    GetSetting("EzImporter.CsvDelimiter", ",")
                 },
-                FirstRowAsColumnNames = Sitecore.Configuration.Settings.GetBoolSetting("EzImporter.FirstRowAsColumnNames", true)
+                FirstRowAsColumnNames = GetBoolSetting("EzImporter.FirstRowAsColumnNames", true)
             };
         }
+
+        protected TEnum GetEnum<TEnum>(string settingName, TEnum defaultValue) where TEnum : struct
+        {
+            var textValue = GetSetting(settingName, defaultValue: string.Empty);
+
+            if (!Enum.TryParse(textValue, out TEnum parsed))
+            {
+                parsed = defaultValue;
+            }
+            return parsed;
+        }
+
+        internal virtual string GetSetting(string settingName, string defaultValue) => Sitecore.Configuration.Settings.GetSetting(settingName, defaultValue);
+
+        internal virtual bool GetBoolSetting(string settingName, bool defaultValue) => Sitecore.Configuration.Settings.GetBoolSetting(settingName, defaultValue);
     }
 }
