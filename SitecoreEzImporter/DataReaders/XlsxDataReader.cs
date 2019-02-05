@@ -10,7 +10,7 @@ namespace EzImporter.DataReaders
 {
     /// <summary>
     /// Reads excel documents via <see cref=" Excel.ExcelReaderFactory"/> helper framework.
-    /// <para>We provide <see cref="ImportItemsArgs.FileStream"/> of Excel file and get <see cref="DataTable"/> build from it to <see cref="ImportItemsArgs.ImportData"/></para>
+    /// <para>We provide <see cref="ImportItemsArgs.FileStream"/> of Excel file and get <see cref="DataTable"/> build from first sheet to to <see cref="ImportItemsArgs.ImportData"/></para>
     /// </summary>
     public class XlsxDataReader : IDataReader
     {
