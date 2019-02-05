@@ -187,6 +187,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Pipelines\ImportItems\ValidateItemNames.cs" />
+    <Compile Include="SettingNames.cs" />
     <Compile Include="Tasks\Import.cs" />
     <Compile Include="Commands\LaunchEzImporter.cs" />
     <Compile Include="Configuration\ImportOptionsFactory.cs" />
