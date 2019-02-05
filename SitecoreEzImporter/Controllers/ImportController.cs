@@ -121,7 +121,7 @@ namespace EzImporter.Controllers
         [HttpGet]
         public IHttpActionResult DefaultSettings()
         {
-            var options = EzImporter.Configuration.Factory.GetDefaultImportOptions();
+            var options = EzImporter.Configuration.ImportOptionsFactory.GetDefaultImportOptions();
             var model = new SettingsModel
             {
                 CsvDelimiter = options.CsvDelimiter[0],

@@ -28,7 +28,7 @@ namespace EzImporter.Tasks
                 + " MultipleValuesImportSeparator=" + importCommand.MultipleValuesImportSeparator
                 + " TreePathValuesImportSeparator=" + importCommand.TreePathValuesImportSeparator, this);
 
-            var options = Factory.GetDefaultImportOptions();
+            var options = ImportOptionsFactory.GetDefaultImportOptions();
             if (importCommand.CsvDelimiter != null)
             {
                 options.CsvDelimiter = new[] {importCommand.CsvDelimiter};

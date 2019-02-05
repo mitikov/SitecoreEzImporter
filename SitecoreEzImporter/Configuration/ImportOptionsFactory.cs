@@ -2,7 +2,10 @@
 
 namespace EzImporter.Configuration
 {
-    public class Factory
+    /// <summary>
+    /// Provides configuration values for import process based on Sitecore settings.
+    /// </summary>
+    public class ImportOptionsFactory
     {
         public static IImportOptions GetDefaultImportOptions()
         {
