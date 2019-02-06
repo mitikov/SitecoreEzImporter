@@ -180,6 +180,7 @@
   <ItemGroup>
     <Compile Include="Configuration\DefaultImportOptionsFactory.cs" />
     <Compile Include="Configuration\ImporterModuleConfiguration.cs" />
+    <Compile Include="Helpers\IDNameProviderHelper.cs" />
     <Compile Include="Services\ServicesConfigurator.cs" />
     <Compile Include="FieldUpdater\DefaultFieldUpdateManager.cs" />
     <Compile Include="Map\ItemDto.cs" />

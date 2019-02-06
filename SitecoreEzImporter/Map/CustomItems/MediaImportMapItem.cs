@@ -12,7 +12,7 @@ namespace EzImporter.Map.CustomItems
         {
         }
 
-        public Item TargetTemplate => ItemExtensions.GetLinkItem(InnerItem, fieldName: "TargetTemplate");
+        public Item TargetTemplate => InnerItem.GetLinkItem(fieldName: "TargetTemplate");
 
         public string InputFilenameFormat => InnerItem["InputFilenameFormat"];
 
