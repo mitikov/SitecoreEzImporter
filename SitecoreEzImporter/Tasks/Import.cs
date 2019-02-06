@@ -100,7 +100,7 @@ namespace EzImporter.Tasks
                 FileStream = stream.BaseStream,
                 RootItemId = importCommand.ImportLocationId,
                 TargetLanguage = importCommand.TargetLanguage,
-                Map = Map.Factory.BuildMapInfo(importCommand.ImportMapId),
+                Map = Map.MapFactory.BuildMapInfo(importCommand.ImportMapId),
                 ImportOptions = options
             };
             try

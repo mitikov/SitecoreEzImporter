@@ -180,6 +180,7 @@
   <ItemGroup>
     <Compile Include="Configuration\DefaultImportOptionsFactory.cs" />
     <Compile Include="Configuration\ImporterModuleConfiguration.cs" />
+    <Compile Include="Helpers\IDNameProviderHelper.cs" />
     <Compile Include="Services\ServicesConfigurator.cs" />
     <Compile Include="FieldUpdater\DefaultFieldUpdateManager.cs" />
     <Compile Include="Map\ItemDto.cs" />
@@ -222,7 +223,7 @@
     <Compile Include="Extensions\NTuple.cs" />
     <Compile Include="Map\OutputField.cs" />
     <Compile Include="Map\OutputMap.cs" />
-    <Compile Include="Map\Factory.cs" />
+    <Compile Include="Map\MapFactory.cs" />
     <Compile Include="Models\ImportModel.cs" />
     <Compile Include="Models\ImportResultModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />

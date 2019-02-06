@@ -1,5 +1,8 @@
-﻿namespace EzImporter.Configuration
+﻿using System;
+
+namespace EzImporter.Configuration
 {
+    [Obsolete("No direct usages, candidate for removal")]
     public class ImporterModuleConfiguration
     {
         public static ImporterModuleConfiguration GetConfigurationSettings()

@@ -1,53 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using EzImporter.Extensions;
-using Sitecore.Data;
+﻿using EzImporter.Extensions;
+using Sitecore;
 using Sitecore.Data.Items;
+using System;
 
 namespace EzImporter.Map.CustomItems
 {
+    [Obsolete("No direct usages, candidate for removal")]
     public class MediaImportMapItem : CustomItem
     {
         public MediaImportMapItem(Item item) : base(item)
         {
-
         }
 
-        public Item TargetTemplate
-        {
-            get { return ItemExtensions.GetLinkItem(base.InnerItem, "TargetTemplate"); }
-        }
+        public Item TargetTemplate => InnerItem.GetLinkItem(fieldName: "TargetTemplate");
 
-        public string InputFilenameFormat
-        {
-            get { return base.InnerItem["InputFilenameFormat"]; }
-        }
+        public string InputFilenameFormat => InnerItem["InputFilenameFormat"];
 
-        public string ItemIdProperty
-        {
-            get { return base.InnerItem["ItemIdProperty"]; }
-        }
+        public string ItemIdProperty => InnerItem["ItemIdProperty"];
 
-        public string ImageFieldProperty
-        {
-            get { return base.InnerItem["ImageFieldProperty"]; }
-        }
+        public string ImageFieldProperty => InnerItem["ImageFieldProperty"];
 
-        public bool UseFileNameForMediaItem
-        {
-            get { return base.InnerItem["UseFileNameForMediaItem"] == "1"; }
-        }
+        public bool UseFileNameForMediaItem => MainUtil.GetBool(InnerItem["UseFileNameForMediaItem"], defaultValue: false);
 
-        public string NewMediaItemNameFormat
-        {
-            get { return base.InnerItem["NewMediaItemNameFormat"]; }
-        }
+        public string NewMediaItemNameFormat => InnerItem["NewMediaItemNameFormat"];
 
-        public string AltTextFormat
-        {
-            get { return base.InnerItem["AltTextFormat"]; }
-        }
+        public string AltTextFormat => InnerItem["AltTextFormat"];
     }
 }

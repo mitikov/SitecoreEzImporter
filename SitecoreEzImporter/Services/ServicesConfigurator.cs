@@ -1,8 +1,9 @@
-﻿using EzImporter.FieldUpdater;
+﻿using EzImporter.Configuration;
+using EzImporter.FieldUpdater;
 using Microsoft.Extensions.DependencyInjection;
 using Sitecore.DependencyInjection;
 
-namespace EzImporter.Configuration
+namespace EzImporter.Services
 {
     /// <summary>
     /// Registers services neeeded for Importer execution.

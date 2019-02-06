@@ -11,17 +11,20 @@ namespace EzImporter.Extensions
 {
     public static class ItemExtensions
     {
+        [Obsolete("No direct usages, candidate for removal")]
         public static bool HasVersion(this Item item)
         {
             return HasVersion(item, Sitecore.Context.Language);
         }
 
+        [Obsolete("No direct usages, candidate for removal")]
         public static bool HasVersion(this Item item, Language language)
         {
             Item itemInLanguage = Sitecore.Context.Database.GetItem(item.ID, language);
             return itemInLanguage.Versions.Count > 0;
         }
 
+        [Obsolete("No direct usages, candidate for removal")]
         public static bool IsDerivedFrom(this Item item, string templateId)
         {
             if (string.IsNullOrEmpty(templateId))
@@ -60,6 +63,7 @@ namespace EzImporter.Extensions
         /// <param name="item"></param>
         /// <param name="templateId"></param>
         /// <returns></returns>
+        [Obsolete("No direct usages, candidate for removal")] 
         public static bool IsDescendantOfA(this Item item, ID templateId)
         {
             if (item == null)
@@ -85,6 +89,7 @@ namespace EzImporter.Extensions
             return item.Children.FirstOrDefault(i => i.InheritsFrom(templateId));
         }
 
+        [Obsolete("No direct usages, candidate for removal")]
         public static Item FirstChildInheritingFrom(this Item item, string templateId)
         {
             if (templateId == null)
