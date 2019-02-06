@@ -1,9 +1,11 @@
 ﻿using EzImporter.Extensions;
 using Sitecore;
 using Sitecore.Data.Items;
+using System;
 
 namespace EzImporter.Map.CustomItems
 {
+    [Obsolete("No direct usages, candidate for removal")]
     public class MediaImportMapItem : CustomItem
     {
         public MediaImportMapItem(Item item) : base(item)
