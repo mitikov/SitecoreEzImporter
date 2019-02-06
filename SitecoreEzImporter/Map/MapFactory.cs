@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EzImporter.Map
 {
-    public class Factory
+    public class MapFactory
     {
         public static ItemImportMap BuildMapInfo(ID mapId)
         {

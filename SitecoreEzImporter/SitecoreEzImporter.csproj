@@ -222,7 +222,7 @@
     <Compile Include="Extensions\NTuple.cs" />
     <Compile Include="Map\OutputField.cs" />
     <Compile Include="Map\OutputMap.cs" />
-    <Compile Include="Map\Factory.cs" />
+    <Compile Include="Map\MapFactory.cs" />
     <Compile Include="Models\ImportModel.cs" />
     <Compile Include="Models\ImportResultModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />

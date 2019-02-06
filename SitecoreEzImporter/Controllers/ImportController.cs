@@ -71,7 +71,7 @@ namespace EzImporter.Controllers
                     FileStream = uploadedFile.GetMediaStream(),
                     RootItemId = new ID(importModel.ImportLocationId),
                     TargetLanguage = Sitecore.Globalization.Language.Parse(languageItem.Name),
-                    Map = Map.Factory.BuildMapInfo(new ID(importModel.MappingId)),
+                    Map = Map.MapFactory.BuildMapInfo(new ID(importModel.MappingId)),
                     ImportOptions = new ImportOptions
                     {
                         CsvDelimiter = new[] {importModel.CsvDelimiter},
